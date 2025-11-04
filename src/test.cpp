@@ -18,7 +18,9 @@
 #endif
 #include <AL/al.h>
 #include <AL/alext.h>
-#include <modplug.h>vfuncedef std::stringstream strs;
+#include <modplug.h>
+
+typedef std::stringstream strs;
 typedef std::function<std::string (strs &, strs &)> vfunc;
 
 std::string pad(std::string s, size_t size = 16)
@@ -37,7 +39,8 @@ int main(int argc, char **argv)
 		l << zlibVersion();
 		return "zlib";
 	};
-stdfunc ogg = [](strs &c, strs &l)
+
+	vfunc ogg = [](strs &c, strs &l)
 	{
 		c << "N/A";
 		l << "N/A";
@@ -111,6 +114,16 @@ stdfunc ogg = [](strs &c, strs &l)
 		return "modplug";
 	};
 
+	std::vector<vfunc> funcs;
+	funcs.push_back(zlib);
+	funcs.push_back(ogg);
+	funcs.push_back(vorbis);
+	funcs.push_back(vorbisfile);
+	funcs.push_back(freetype);
+	funcs.push_back(SDL);
+	funcs.push_back(OpenAL);
+	funcs.push_back(modplug);
+
 	for (size_t i = 0; i < funcs.size(); ++i)
 	{
 		vfunc f = funcs[i];
@@ -121,4 +134,3 @@ stdfunc ogg = [](strs &c, strs &l)
 
 	return getchar();
 }
-
